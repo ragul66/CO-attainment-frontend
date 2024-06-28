@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 
-const AddCourse = () => {
+const ViewCourses = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [namelist_id, setNamelistId] = useState("");
@@ -194,4 +194,4 @@ const AddCourse = () => {
   );
 };
 
-export default AddCourse;
+export default ViewCourses;

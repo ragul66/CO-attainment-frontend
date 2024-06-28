@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import Modal from "react-modal";
 
-const AddNamelist = () => {
+const ViewNamelist = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -154,4 +154,4 @@ const AddNamelist = () => {
   );
 };
 
-export default AddNamelist;
+export default ViewNamelist;

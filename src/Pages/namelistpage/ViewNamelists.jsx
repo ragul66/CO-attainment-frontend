@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Modal from "../components/Modal";
+import Navbar from "../../components/Navbar";
+import Modal from "./Modal";
 
-const Namelist = () => {
+const ViewNamelists = () => {
   const [showModal, setShowModal] = useState(false);
   const [titles, setTitles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,4 +79,4 @@ const Namelist = () => {
   );
 };
 
-export default Namelist;
+export default ViewNamelists;

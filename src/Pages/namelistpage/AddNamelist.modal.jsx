@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Modal = ({ showModal, handleClose }) => {
+const AddNamelistModal = ({ showModal, handleClose }) => {
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
@@ -63,4 +63,4 @@ const Modal = ({ showModal, handleClose }) => {
   );
 };
 
-export default Modal;
+export default AddNamelistModal;

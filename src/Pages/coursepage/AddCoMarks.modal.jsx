@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import { useParams } from "react-router-dom";
 
-const AddCourses = () => {
+const AddCoMarksModal = () => {
   const [students, setStudents] = useState([]);
   const [Co, setCo] = useState(null);
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -71,4 +71,4 @@ const AddCourses = () => {
   );
 };
 
-export default AddCourses;
+export default AddCoMarksModal;
