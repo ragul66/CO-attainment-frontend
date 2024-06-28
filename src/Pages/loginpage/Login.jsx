@@ -39,7 +39,7 @@ const Login = () => {
           const data = await response.json();
           localStorage.setItem("user", JSON.stringify(data));
           // Assuming the API returns students array in the `students` property
-          navigate("/namelist"); // Navigate to the namelist page after successful login
+          navigate("/namelists"); // Navigate to the namelist page after successful login
         } else {
           const data = await response.json();
           console.error("Error logging in:", data.message);

@@ -27,8 +27,8 @@ const Navbar = () => {
           alt="SITLOGO"
         />
         <div className="flex flex-row gap-6 justify-center items-center font-bold text-white cursor-pointer">
-          <h2 onClick={() => navigate(`/namelist`)}>Namelist</h2>
-          <h2 onClick={() => navigate("/course")}>Course</h2>
+          <h2 onClick={() => navigate(`/namelists`)}>Namelist</h2>
+          <h2 onClick={() => navigate("/courses")}>Course</h2>
           <h2 onClick={() => navigate("/pt")}>ptLists</h2>
           <h2 onClick={() => navigate("/addmarks")}>Co-Attainment</h2>
         </div>

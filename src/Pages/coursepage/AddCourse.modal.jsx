@@ -1,66 +1,92 @@
 import React, { useState } from "react";
 
-const AddCourseModel = ({ showModal, handleClose }) => {
-  const [title, setTitle] = useState("");
-  const [error, setError] = useState("");
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  const baseUrl = import.meta.env.VITE_API;
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(
-        `${baseUrl}/student/addlist/${user.userId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title }),
-        }
-      );
-
-      if (response.ok) {
-        setTitle("");
-        handleClose();
-      } else {
-        const data = await response.json();
-        setError(data.message || "An error occurred.");
-      }
-    } catch (error) {
-      setError("An error occurred while submitting the form.");
-    }
-  };
-
-  if (!showModal) return null;
+const AddCourseModal = ({
+  isModalOpen,
+  closeModal,
+  handleSubmit,
+  title,
+  setTitle,
+  namelist_id,
+  setNamelistId,
+  rows,
+  handleTableRowChange,
+  handleAddTableRow,
+  titles,
+}) => {
+  if (!isModalOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 font-primary">
-      <div className="bg-white p-6 rounded-md relative">
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
         <button
-          className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full"
-          onClick={handleClose}
+          onClick={closeModal}
+          className="bg-red-600 text-sm p-2 w-fit text-white border-2 border-none rounded-md mb-4"
         >
-          X
+          Close
         </button>
-        <h2 className="text-xl font-bold mb-4">Add Title</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="border border-gray-300 p-2 rounded w-full mb-4"
-          />
-          <button type="submit" className="bg-blue-600 text-white p-2 rounded">
-            Submit
-          </button>
+          <div className="flex flex-col mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Title
+            </label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Enter the Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="border border-gray-300 p-2 mb-2 rounded"
+            />
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Namelist
+            </label>
+            <select
+              name="nameList"
+              value={namelist_id}
+              onChange={(e) => setNamelistId(e.target.value)}
+              className="border border-gray-300 p-2 mb-2 rounded-lg"
+            >
+              <option value="" disabled>
+                Select name
+              </option>
+              {titles.map((title, index) => (
+                <option key={index} value={title._id}>
+                  {title.title}
+                </option>
+              ))}
+            </select>
+
+            {rows.map((tableRow, tableRowIndex) => (
+              <input
+                key={tableRowIndex}
+                type="text"
+                placeholder="Table Row Name"
+                value={tableRow}
+                onChange={(e) => handleTableRowChange(tableRowIndex, e)}
+                className="border border-gray-300 p-2 mb-2 rounded-lg"
+              />
+            ))}
+            <button
+              type="button"
+              onClick={handleAddTableRow}
+              className="bg-blue-600 text-sm p-2 w-fit text-white border-2 border-none rounded-md mt-1 mb-4"
+            >
+              Add Table Row
+            </button>
+          </div>
+
+          <div className="space-x-4">
+            <button
+              type="submit"
+              className="bg-green-600 text-xl p-2 w-44 text-white border-2 border-none rounded-md mt-4"
+            >
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 };
 
-export default AddCourseModel;
+export default AddCourseModal;

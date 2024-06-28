@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import Modal from "react-modal";
+import AddStudentModal from "./AddStudent.modal";
 
 const ViewNamelist = () => {
   const navigate = useNavigate();
@@ -80,57 +80,17 @@ const ViewNamelist = () => {
           Add StudentName
         </button>
       </div>
-      <Modal
+      <AddStudentModal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
-        contentLabel="Add Student"
-        className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-opacity-75 bg-gray-800"
-        overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-75"
-      >
-        <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
-          <button
-            onClick={() => setIsModalOpen(false)}
-            className="absolute top-2 right-2 text-gray-700"
-          >
-            &times;
-          </button>
-          <form className="flex flex-col items-center" onSubmit={handleSubmit}>
-            <p>{title.title}</p>
-
-            <div className="mb-4 w-full">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Student Name:
-              </label>
-              <input
-                type="text"
-                value={studentName}
-                onChange={(e) => setStudentName(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Enter student name"
-              />
-            </div>
-            <div className="mb-4 w-full">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Roll No:
-              </label>
-              <input
-                type="text"
-                value={rollNo}
-                onChange={(e) => setRollNo(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="Enter roll number"
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Submit
-            </button>
-            {error && <p className="text-red-500 text-xs italic">{error}</p>}
-          </form>
-        </div>
-      </Modal>
+        studentName={studentName}
+        setStudentName={setStudentName}
+        rollNo={rollNo}
+        setRollNo={setRollNo}
+        handleSubmit={handleSubmit}
+        error={error}
+        title={title.title}
+      />
       <div className="flex justify-center flex-col p-4">
         <h2 className="font-bold text-2xl text-blue-600 mb-6">{title.title}</h2>
         <table className="min-w-full bg-white">

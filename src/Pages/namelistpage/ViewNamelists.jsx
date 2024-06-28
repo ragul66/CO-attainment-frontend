@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import Modal from "./Modal";
+import AddStudentModal from "./AddStudent.modal";
 
 const ViewNamelists = () => {
   const [showModal, setShowModal] = useState(false);
@@ -61,14 +61,14 @@ const ViewNamelists = () => {
           Add Title
         </button>
       </div>
-      <Modal showModal={showModal} handleClose={handleCloseModal} />
+      <AddStudentModal showModal={showModal} handleClose={handleCloseModal} />
       <div className="grid grid-cols-4 gap-4 items-center mt-4 p-6">
         {titles.map((title) => (
           <div
             key={title._id}
             className="border p-2 m-2 w-3/4 rounded bg-gray-100 cursor-pointer hover:bg-sky-500 font-bold hover:text-white"
             onClick={() =>
-              navigate(`/namelist/${title._id}`, { state: { title } })
+              navigate(`/namelists/${title._id}`, { state: { title } })
             }
           >
             {title.title}

@@ -1,7 +1,11 @@
-import React from 'react'
+import React from "react";
+import Navbar from "../../components/Navbar";
 
 export default function ViewCourse() {
   return (
-    <div>ViewCourse</div>
-  )
+    <>
+      <Navbar />
+      <p>ViewCOurse</p>
+    </>
+  );
 }
