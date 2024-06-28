@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import AddStudentModal from "./AddStudent.modal";
+import AddNamelistModal from "./AddNamelist.modal";
 
 const ViewNamelists = () => {
   const [showModal, setShowModal] = useState(false);
@@ -61,7 +61,7 @@ const ViewNamelists = () => {
           Add Title
         </button>
       </div>
-      <AddStudentModal showModal={showModal} handleClose={handleCloseModal} />
+      <AddNamelistModal showModal={showModal} handleClose={handleCloseModal} />
       <div className="grid grid-cols-4 gap-4 items-center mt-4 p-6">
         {titles.map((title) => (
           <div
