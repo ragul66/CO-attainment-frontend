@@ -9,9 +9,10 @@ const ViewCourses = () => {
   const [namelist_id, setNamelistId] = useState("");
   const [rows, setRows] = useState([""]);
   const [titles, setTitles] = useState([]);
-  const [Co, setCo] = useState();
+  const [courses, setCourses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const baseUrl = import.meta.env.VITE_API;
 
   const handleAddTableRow = () => {
     setRows([...rows, ""]);
@@ -23,26 +24,57 @@ const ViewCourses = () => {
     setRows(values);
   };
 
+  const fetchTitles = async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/student/namelists/${user.userId}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setTitles(data);
+    } catch (error) {
+      console.error("Failed to fetch titles:", error);
+    }
+  };
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/course/${user.userId}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setCourses(data);
+    } catch (error) {
+      console.error("Failed to fetch courses:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTitles();
+    fetchCourses();
+  }, [user.userId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API}/course/create/${user.userId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title,
-            namelist_id,
-            rows,
-          }),
-        }
-      );
+      const response = await fetch(`${baseUrl}/course/create/${user.userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          namelist_id,
+          rows,
+        }),
+      });
       if (response.ok) {
         setIsModalOpen(false);
+        fetchCourses(); // Refresh courses after successful submission
       } else {
         console.error("Failed to submit the course.");
       }
@@ -58,44 +90,6 @@ const ViewCourses = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-  useEffect(() => {
-    const fetchTitles = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API}/course/${user.userId}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setTitles(data);
-      } catch (error) {
-        console.error("Failed to fetch titles:", error);
-      }
-    };
-
-    fetchTitles();
-  }, [user.userId]);
-
-  useEffect(() => {
-    const fetchcolists = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API}/course/${user.userId}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setCo(data);
-      } catch (error) {
-        console.error("Failed to fetch titles:", error);
-      }
-    };
-
-    fetchcolists();
-  }, []);
 
   return (
     <>
@@ -122,13 +116,13 @@ const ViewCourses = () => {
         titles={titles}
       />
       <div className="grid grid-cols-4 gap-4 items-center mt-4 p-6">
-        {titles.map((title) => (
+        {courses.map((course) => (
           <div
-            key={title._id}
+            key={course._id}
             className="border p-2 m-2 w-3/4 rounded bg-gray-100 cursor-pointer hover:bg-sky-500 font-bold hover:text-white"
-            onClick={() => navigate(`/courses/${title._id}`)}
+            onClick={() => navigate(`/courses/${course._id}`)}
           >
-            {title.title}
+            {course.title}
           </div>
         ))}
       </div>

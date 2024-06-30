@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import AddStudentModal from "./AddStudent.modal";
 
 const ViewNamelist = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const user = JSON.parse(localStorage.getItem("user"));
-  const title = location.state?.title || {};
-  const id = useParams();
-  console.log(title);
+  const { namelistid } = useParams(); // Destructure namelistid from useParams
   const baseUrl = import.meta.env.VITE_API;
 
   const [studentName, setStudentName] = useState("");
   const [rollNo, setRollNo] = useState("");
-  const [students, setStudents] = useState([]);
-  const [titles, settitles] = useState(id);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-  const [error, setError] = useState(""); // Error state
+  const [namelist, setNamelist] = useState({ title: "", students: [] });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,12 +20,12 @@ const ViewNamelist = () => {
       const response = await fetch(
         `${baseUrl}/student/addstudent/${user.userId}`,
         {
-          method: "PUT", // Use PUT since the route is defined as PUT
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            namelistId: title._id,
+            namelistId: namelistid,
             rollno: rollNo,
             name: studentName,
           }),
@@ -42,7 +37,10 @@ const ViewNamelist = () => {
         fetchStudent(); // Refresh the student list
         setIsModalOpen(false); // Close modal on success
       } else {
-        setError("An error occurred while submitting the namelist");
+        const errorData = await response.json();
+        setError(
+          errorData.message || "An error occurred while submitting the namelist"
+        );
       }
     } catch (error) {
       setError("An error occurred while submitting the namelist");
@@ -52,11 +50,11 @@ const ViewNamelist = () => {
   const fetchStudent = async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/student/students/${title._id}/${user.userId}`
+        `${baseUrl}/student/students/${namelistid}/${user.userId}`
       );
       const data = await response.json();
       if (response.ok) {
-        setStudents(data); // Assuming the API returns students array in the `students` property
+        setNamelist(data);
       } else {
         console.error("Error fetching namelist", data.message);
       }
@@ -67,7 +65,7 @@ const ViewNamelist = () => {
 
   useEffect(() => {
     fetchStudent();
-  }, []);
+  }, [namelistid]);
 
   return (
     <>
@@ -89,10 +87,12 @@ const ViewNamelist = () => {
         setRollNo={setRollNo}
         handleSubmit={handleSubmit}
         error={error}
-        title={title.title}
+        title={namelist.title}
       />
       <div className="flex justify-center flex-col p-4">
-        <h2 className="font-bold text-2xl text-blue-600 mb-6">{title.title}</h2>
+        <h2 className="font-bold text-2xl text-blue-600 mb-6">
+          {namelist.title}
+        </h2>
         <table className="min-w-full bg-white">
           <thead className="bg-gray-800 text-white">
             <tr>
@@ -101,7 +101,7 @@ const ViewNamelist = () => {
             </tr>
           </thead>
           <tbody>
-            {students.map((student, index) => (
+            {namelist.students.map((student, index) => (
               <tr key={index} className="bg-gray-100">
                 <td className="border px-4 py-2">{student.name}</td>
                 <td className="border px-4 py-2">{student.rollno}</td>
