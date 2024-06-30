@@ -20,7 +20,7 @@ const Navbar = () => {
   };
   return (
     <>
-      <div className=" h-24 bg-sky-600 p-1 items-center flex flex-row w-screen  gap-6">
+      <div className=" bg-sky-600 p-3 items-center flex flex-row w-screen  gap-6">
         <img
           className=" ml-12 cursor-pointer size-12 rounded-full"
           src={logo}
@@ -33,7 +33,7 @@ const Navbar = () => {
           <h2 onClick={() => navigate("/addmarks")}>Co-Attainment</h2>
         </div>
         <button
-          className="ml-auto border-2 border-none bg-green-600 text-xl text-white p-2 rounded-md "
+          className="ml-auto border-2 border-none bg-green-600 text-xl text-white p-1 rounded-md "
           onClick={() => onexit()}
         >
           Logout

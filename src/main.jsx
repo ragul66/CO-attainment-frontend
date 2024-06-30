@@ -1,14 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import ViewCourse from "./Pages/coursepage/ViewCourse";
-import ViewCourses from "./Pages/coursepage/ViewCourses";
-import Login from "./Pages/loginpage/Login";
-import ViewNamelist from "./Pages/namelistpage/ViewNamelist";
-import ViewNamelists from "./Pages/namelistpage/ViewNamelists";
-import ViewPtList from "./Pages/ptpage/ViewPtList";
-import ViewPtLists from "./Pages/ptpage/ViewPtLists";
+import Modal from "react-modal";
+import ViewCourse from "./pages/coursepage/ViewCourse";
+import ViewCourses from "./pages/coursepage/ViewCourses";
+import Login from "./pages/loginpage/Login";
+import ViewNamelist from "./pages/namelistpage/ViewNamelist";
+import ViewNamelists from "./pages/namelistpage/ViewNamelists";
+import ViewPtList from "./pages/ptpage/ViewPtList";
+import ViewPtLists from "./pages/ptpage/ViewPtLists";
 import "./index.css";
+
+// Set the app element for react-modal
+Modal.setAppElement("#root");
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

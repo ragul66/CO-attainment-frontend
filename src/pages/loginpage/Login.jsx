@@ -10,7 +10,7 @@ const Login = () => {
   useEffect(() => {
     const checkLogin = () => {
       if (user) {
-        navigate("/namelist");
+        navigate("/namelists");
       }
     };
     checkLogin();

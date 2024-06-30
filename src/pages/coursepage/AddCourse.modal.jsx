@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const AddCourseModal = ({
   isModalOpen,
@@ -41,13 +41,13 @@ const AddCourseModal = ({
               Namelist
             </label>
             <select
-              name="nameList"
+              name="namelist"
               value={namelist_id}
               onChange={(e) => setNamelistId(e.target.value)}
               className="border border-gray-300 p-2 mb-2 rounded-lg"
             >
               <option value="" disabled>
-                Select name
+                Select namelist
               </option>
               {titles.map((title, index) => (
                 <option key={index} value={title._id}>
