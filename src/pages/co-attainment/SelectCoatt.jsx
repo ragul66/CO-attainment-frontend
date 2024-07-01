@@ -1,11 +1,13 @@
 import React from "react";
 import Navbar from "../../components/Navbar";
 
-export default function ViewPtList() {
+function SelectCoatt() {
   return (
     <>
       <Navbar />
-      <div>ViewPtList</div>
+      <div>Hello Co-attainment</div>
     </>
   );
 }
+
+export default SelectCoatt;

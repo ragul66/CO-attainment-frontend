@@ -30,7 +30,7 @@ const Navbar = () => {
           <h2 onClick={() => navigate(`/namelists`)}>Namelist</h2>
           <h2 onClick={() => navigate("/courses")}>Course</h2>
           <h2 onClick={() => navigate("/ptlists")}>ptLists</h2>
-          <h2 onClick={() => navigate("/addmarks")}>Co-Attainment</h2>
+          <h2 onClick={() => navigate("/coattainment")}>Co-Attainment</h2>
         </div>
         <button
           className="ml-auto border-2 border-none bg-green-600 text-xl text-white p-1 rounded-md "

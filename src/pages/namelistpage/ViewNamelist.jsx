@@ -96,8 +96,11 @@ const ViewNamelist = () => {
         <table className="min-w-full bg-white">
           <thead className="bg-gray-800 text-white">
             <tr>
-              <th className="w-1/2 py-2">Student Name</th>
-              <th className="w-1/2 py-2">Roll No</th>
+              <th className="w-auto py-2">Student Name</th>
+              <th className="w-auto py-2">Roll No</th>
+              <th className="w-40 py-2  text-left text-white font-medium">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -105,6 +108,14 @@ const ViewNamelist = () => {
               <tr key={index} className="bg-gray-100">
                 <td className="border px-4 py-2">{student.name}</td>
                 <td className="border px-4 py-2">{student.rollno}</td>
+                <td className="py-2 px-4">
+                  <button className="bg-blue-500 text-white py-1 px-2 rounded mr-2 hover:bg-blue-700">
+                    Edit
+                  </button>
+                  <button className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-700">
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
