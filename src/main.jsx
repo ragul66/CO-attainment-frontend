@@ -26,7 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/courses/:courseid" element={<ViewCourse />} />
         <Route path="/ptlists" element={<ViewPtLists />} />
         <Route path="/ptlists/:ptlistid" element={<ViewPtList />} />
-        <Route path="coattainment" element={<SelectCoatt />} />
+        <Route path="/coattainment" element={<SelectCoatt />} />
       </Routes>
     </HashRouter>
   </React.StrictMode>
