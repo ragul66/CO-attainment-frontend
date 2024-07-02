@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import AddPtModal from "./AddPt.modal";
+import { useNavigate } from "react-router-dom";
 
 export default function ViewPtLists() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pts, setPts] = useState([]);
+
+  const fetchPts = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API}/pt/${user.userId}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setPts(data);
+    } catch (error) {
+      console.error("Failed to fetch courses:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchTitles = async () => {
-      try {
-        const response = await fetch(
-          `${baseUrl}/student/namelists/${user.userId}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setTitles(data);
-      } catch (error) {
-        console.log("Error occured while fetching");
-      }
-    };
-
-    fetchTitles();
-  }, []);
+    fetchPts();
+  }, [user.userId]);
 
   return (
     <>
@@ -36,6 +41,18 @@ export default function ViewPtLists() {
         </button>
       </div>
       <AddPtModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+      <div className="grid grid-cols-4 gap-4 items-center mt-4 p-6">
+        {pts.map((pt) => (
+          <div
+            key={pt._id}
+            className="border p-2 m-2 w-3/4 rounded bg-gray-100 cursor-pointer hover:bg-sky-500 font-bold hover:text-white"
+            onClick={() => navigate(`/ptlists/${pt._id}`)}
+          >
+            {pt.title}
+          </div>
+        ))}
+      </div>
     </>
   );
 }

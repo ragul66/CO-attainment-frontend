@@ -5,8 +5,7 @@ import AddStudentModal from "./AddStudent.modal";
 
 const ViewNamelist = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const { namelistid } = useParams(); // Destructure namelistid from useParams
-  const baseUrl = import.meta.env.VITE_API;
+  const { namelistid } = useParams();
 
   const [studentName, setStudentName] = useState("");
   const [rollNo, setRollNo] = useState("");
@@ -36,6 +35,7 @@ const ViewNamelist = () => {
         setRollNo("");
         fetchStudent(); // Refresh the student list
         setIsModalOpen(false); // Close modal on success
+        setError(""); // Clear any previous error
       } else {
         const errorData = await response.json();
         setError(
@@ -50,7 +50,9 @@ const ViewNamelist = () => {
   const fetchStudent = async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/student/students/${namelistid}/${user.userId}`
+        `${import.meta.env.VITE_API}/student/students/${namelistid}/${
+          user.userId
+        }`
       );
       const data = await response.json();
       if (response.ok) {

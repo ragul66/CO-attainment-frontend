@@ -19,6 +19,7 @@ const AddStudentModal = ({
       contentLabel="Add Student"
       className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-opacity-75 bg-gray-800"
       overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-75"
+      ariaHideApp={false}
     >
       <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
         <button
@@ -28,7 +29,7 @@ const AddStudentModal = ({
           &times;
         </button>
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
-          <p>{title}</p>
+          <p className="mb-4 font-semibold text-lg">{title}</p>
           <div className="mb-4 w-full">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Student Name:
@@ -59,7 +60,7 @@ const AddStudentModal = ({
           >
             Submit
           </button>
-          {error && <p className="text-red-500 text-xs italic">{error}</p>}
+          {error && <p className="text-red-500 text-xs italic mt-4">{error}</p>}
         </form>
       </div>
     </Modal>

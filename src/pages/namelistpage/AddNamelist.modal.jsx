@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 
-const AddNamelistModal = ({ showModal, handleClose }) => {
-  const [title, setTitle] = useState("");
-  const [error, setError] = useState("");
+const AddNamelistModal = ({ showModal, toggleModal }) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const baseUrl = import.meta.env.VITE_API;
+  const [title, setTitle] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${baseUrl}/student/addlist/${user.userId}`,
+        `${import.meta.env.VITE_API}/student/addlist/${user.userId}`,
         {
           method: "POST",
           headers: {
@@ -23,7 +22,7 @@ const AddNamelistModal = ({ showModal, handleClose }) => {
 
       if (response.ok) {
         setTitle("");
-        handleClose();
+        toggleModal();
       } else {
         const data = await response.json();
         setError(data.message || "An error occurred.");
@@ -36,11 +35,14 @@ const AddNamelistModal = ({ showModal, handleClose }) => {
   if (!showModal) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 font-primary">
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 font-primary"
+      onClick={() => toggleModal()}
+    >
       <div className="bg-white p-6 rounded-md relative">
         <button
           className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full"
-          onClick={handleClose}
+          onClick={toggleModal}
         >
           X
         </button>

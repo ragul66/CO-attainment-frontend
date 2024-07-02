@@ -17,9 +17,8 @@ const Login = () => {
   }, [navigate, user]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
 
-    // Validate email format and domain
     const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
     if (emailPattern.test(email)) {
       setEmailError("");
@@ -28,7 +27,7 @@ const Login = () => {
         const response = await fetch(
           `${import.meta.env.VITE_API}/user/${email}`,
           {
-            method: "POST", // Use PUT since the route is defined as PUT
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
@@ -38,8 +37,8 @@ const Login = () => {
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem("user", JSON.stringify(data));
-          // Assuming the API returns students array in the `students` property
-          navigate("/namelists"); // Navigate to the namelist page after successful login
+
+          navigate("/namelists");
         } else {
           const data = await response.json();
           console.error("Error logging in:", data.message);

@@ -5,14 +5,14 @@ import AddCourseModal from "./AddCourse.modal";
 
 const ViewCourses = () => {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [title, setTitle] = useState("");
   const [namelist_id, setNamelistId] = useState("");
   const [rows, setRows] = useState([""]);
   const [titles, setTitles] = useState([]);
   const [courses, setCourses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const baseUrl = import.meta.env.VITE_API;
 
   const handleAddTableRow = () => {
     setRows([...rows, ""]);
@@ -27,7 +27,7 @@ const ViewCourses = () => {
   const fetchTitles = async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/student/namelists/${user.userId}`
+        `${import.meta.env.VITE_API}/student/namelists/${user.userId}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -41,7 +41,9 @@ const ViewCourses = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch(`${baseUrl}/course/${user.userId}`);
+      const response = await fetch(
+        `${import.meta.env.VITE_API}/course/${user.userId}`
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -61,17 +63,20 @@ const ViewCourses = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${baseUrl}/course/create/${user.userId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          namelist_id,
-          rows,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API}/course/create/${user.userId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            namelist_id,
+            rows,
+          }),
+        }
+      );
       if (response.ok) {
         setIsModalOpen(false);
         fetchCourses(); // Refresh courses after successful submission

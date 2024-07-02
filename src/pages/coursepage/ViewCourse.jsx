@@ -3,9 +3,10 @@ import Navbar from "../../components/Navbar";
 import { useParams } from "react-router-dom";
 
 export default function ViewCourse() {
-  const [courselist, setCourselist] = useState(null);
-  const { courseid } = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
+  const { courseid } = useParams();
+
+  const [courselist, setCourselist] = useState(null);
 
   const fetchCourse = async () => {
     try {
@@ -14,9 +15,8 @@ export default function ViewCourse() {
       );
       const data = await response.json();
       setCourselist(data);
-      console.log(data);
     } catch (error) {
-      console.log("error while fetching");
+      console.log("error while fetching:", error);
     }
   };
 
