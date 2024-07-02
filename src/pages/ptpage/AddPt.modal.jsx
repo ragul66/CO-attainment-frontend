@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Modal({ isOpen, onClose }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [titles, setTitles] = useState([]);
+  const [namelist_id, setNamelistId] = useState("");
+  const [mainTitle, setMainTitle] = useState("");
+  const [mainMark, setMainMark] = useState(0);
   const [rows, setRows] = useState([
     {
       title: "",
@@ -56,6 +62,64 @@ export default function Modal({ isOpen, onClose }) {
     setRows(newRows);
   };
 
+  const fetchTitles = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API}/student/namelists/${user.userId}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setTitles(data);
+    } catch (error) {
+      console.error("Error occurred while fetching:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (user && user.userId) {
+      fetchTitles();
+    }
+  }, [user]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log({
+        nameListId: namelist_id,
+        title: mainTitle,
+        parts: rows,
+        maxMark: mainMark,
+      });
+      // const response = await fetch(
+      //   `${import.meta.env.VITE_API}/pt/create/${user.userId}`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       nameListId: namelist_id,
+      //       title: mainTitle,
+      //       parts: rows,
+      //       maxMark: 100,
+      //     }),
+      //   }
+      // );
+
+      // if (!response.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
+
+      // const result = await response.json();
+      // console.log("PtList created:", result);
+      onClose();
+    } catch (error) {
+      console.error("Error creating PtList:", error);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -67,20 +131,51 @@ export default function Modal({ isOpen, onClose }) {
             X
           </button>
         </div>
-        <form>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Title Name
+            </label>
+            <input
+              type="text"
+              value={mainTitle}
+              onChange={(e) => setMainTitle(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Total Mark
+            </label>
+            <input
+              type="number"
+              value={mainMark}
+              onChange={(e) => setMainMark(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Namelist
+            </label>
+            <select
+              name="namelist"
+              value={namelist_id}
+              onChange={(e) => setNamelistId(e.target.value)}
+              className="border border-gray-300 p-2 mb-2 rounded-lg"
+            >
+              <option value="" disabled>
+                Select namelist
+              </option>
+              {titles.map((title, index) => (
+                <option key={index} value={title._id}>
+                  {title.title}
+                </option>
+              ))}
+            </select>
+          </div>
           {rows.map((row, rowIndex) => (
             <div key={rowIndex} className="mb-4">
-              {rowIndex === 0 && (
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">
-                    TitleName
-                  </label>
-                  <input
-                    type="text"
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-              )}
               <div className="flex space-x-2 mb-2">
                 <input
                   type="text"
@@ -106,7 +201,7 @@ export default function Modal({ isOpen, onClose }) {
                 className="bg-blue-600 text-white p-2 rounded-md mb-2"
                 onClick={() => handleAddQuestion(rowIndex)}
               >
-                Add Col
+                Add Question
               </button>
               {row.questions.map((question, questionIndex) => (
                 <div key={questionIndex} className="flex space-x-2 mb-2">
@@ -139,7 +234,6 @@ export default function Modal({ isOpen, onClose }) {
                     <option value="understand">Understand</option>
                     <option value="apply">Apply</option>
                     <option value="analyse">Analyse</option>
-                    <option value="assignment">Assignment</option>
                   </select>
                 </div>
               ))}
